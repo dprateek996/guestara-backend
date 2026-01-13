@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js
+}
+
+datasource db{
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+}
+
+model Category {
+id               String @id @degault(uuid())
+name             String
+description      String?
+tax              Float?
+tax_applicable   Boolean  @default(false)
+
+parentId         String?
+parent           Category?  @relation("CategoryToSubCategory", fields: [parentId], references: [id])
+children         Category[] @relation("CategoryToSubCategory")
+
+items            Item[]
+
+is_active        Boolean  @default(true)
+createdAt        DateTime @default(now())
+updatedAt        DateTime @updatedAt
+}
+
+model Item{
+  id  String @id @default (uuid())
+  name String
+  description String?
+  base_price Float
+  tax Float? 
+
+
+categoryId String?
+category     Category?  @relation(fields: [categoryId], references: [id])
+
+pricing_type PricingType @default(STATIC)
+
+
+available_days Int[] 
+
+
+is_active Boolean @default(true)
+createdAt DateTime @default(now())
+updatedAt DateTime @updatedAt
+}
+
+enum PricingType{
+  STATIC
+  TIERED 
+  COMPLIMENTARY
+  DISCOUNTED 
+  DYNAMIC
+}
