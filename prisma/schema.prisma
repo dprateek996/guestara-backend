@@ -43,27 +43,13 @@ model Item {
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 }
-
-model Item{
-id        String @id @default(uuid())
-name      String
-description  String?
-base_price   Float
-tax          Float?
-
-categoryId   String
-category     Category @relation(fields: [categoryId], references: [id])
-
-
-pricing_type PricingType @default(STATIC)
-
-is_active    Boolean   @default(true)
-createdAt    DateTime  @default(now())
-updatedAt    DateTime  @updatedAt 
-
-
+model Modifier {
+  id           String @id @default(uuid())
+  name         String
+  extra_price  Float
+  itemId       String
+  item         Item   @relation(fields: [itemId], references: [id])
 }
-
 
 enum PricingType {
   STATIC
