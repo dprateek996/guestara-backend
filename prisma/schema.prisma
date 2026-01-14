@@ -4,52 +4,71 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Category {
-id               String @id @default(uuid())
-name             String
-description      String?
-tax              Float?
-tax_applicable   Boolean  @default(false)
+  id             String    @id @default(uuid())
+  name           String
+  description    String?
+  tax            Float?   
+  tax_applicable Boolean   @default(false)
+  
+  parentId       String?
+  parent         Category?  @relation("CategoryToSubcategory", fields: [parentId], references: [id])
+  children       Category[] @relation("CategoryToSubcategory")
 
-parentId         String?
-parent           Category?  @relation("CategoryToSubCategory", fields: [parentId], references: [id])
-children         Category[] @relation("CategoryToSubCategory")
+  items          Item[]
+  
+  is_active      Boolean   @default(true)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
 
-items            Item[]
+model Item {
+  id             String    @id @default(uuid())
+  name           String
+  description    String?
+  base_price     Float
+  tax            Float?    // Inheritance logic will happen in the Service layer
+  
+  categoryId     String
+  category       Category  @relation(fields: [categoryId], references: [id])
 
-is_active        Boolean  @default(true)
-createdAt        DateTime @default(now())
-updatedAt        DateTime @updatedAt
+  pricing_type   PricingType @default(STATIC)
+  
+  available_days Int[]     
+  
+  is_active      Boolean   @default(true)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 }
 
 model Item{
-  id  String @id @default (uuid())
-  name String
-  description String?
-  base_price Float
-  tax Float? 
+id        String @id @default(uuid())
+name      String
+description  String?
+base_price   Float
+tax          Float?
 
+categoryId   String
+category     Category @relation(fields: [categoryId], references: [id])
 
-categoryId String?
-category     Category?  @relation(fields: [categoryId], references: [id])
 
 pricing_type PricingType @default(STATIC)
 
+is_active    Boolean   @default(true)
+createdAt    DateTime  @default(now())
+updatedAt    DateTime  @updatedAt 
 
-available_days Int[] 
 
-
-is_active Boolean @default(true)
-createdAt DateTime @default(now())
-updatedAt DateTime @updatedAt
 }
 
-enum PricingType{
+
+enum PricingType {
   STATIC
-  TIERED 
+  TIERED
   COMPLIMENTARY
-  DISCOUNTED 
+  DISCOUNTED
   DYNAMIC
 }
