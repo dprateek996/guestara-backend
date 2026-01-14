@@ -1,13 +1,9 @@
-const { PrismaClient } = require("@prisma/client");
-require('dotenv').config();
+const { PrismaClient}= require("@prisma/client");
+const prisma = new PrismaClient();
 
-const prisma = new PrismaClient({
-    accelerateUrl: process.env.DATABASE_URL,
-});
-
-const createCategory = async (data) => {
+const createCategory  = async (data) =>{
     return await prisma.category.create({
-        data: {
+        data:{
             name: data.name,
             description: data.description,
             tax: data.tax,
@@ -17,12 +13,12 @@ const createCategory = async (data) => {
     });
 };
 
-const getAllCategories = async () => {
-    return await prisma.category.findMany({
-        include: { children: true },
+const getAllCategories = async ()=> {
+return await prisma.category.findMany({
+ include: {children: true},
 
-    });
+});
 };
 
 
-module.exports = { createCategory, getAllCategories }
+module.exports = {createCategory, getAllCategories}
