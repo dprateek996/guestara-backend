@@ -1,14 +1,13 @@
 generator client {
-  provider = "prisma-client-js
+  provider = "prisma-client-js"
 }
 
-datasource db{
+datasource db {
   provider = "postgresql"
-  url = env("DATABASE_URL")
 }
 
 model Category {
-id               String @id @degault(uuid())
+id               String @id @default(uuid())
 name             String
 description      String?
 tax              Float?
