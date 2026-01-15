@@ -1,6 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const categoryRoutes = require("./routes/categoryRoutes");
+const itemRoutes = require("./routes/itemRoutes");
 
 dotenv.config();
 

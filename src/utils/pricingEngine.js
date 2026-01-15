@@ -31,9 +31,9 @@ const calculateFinalPrice = (item, quantity = 1, requestedTime = new Array()) =>
                ? price-(price*(value/ 100))
                : price - value;
              break;
-}
-}
+    }
 
-return price;
+    return price;
+};
 
 module.exports = {calculateFinalPrice};

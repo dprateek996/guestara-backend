@@ -1,10 +1,10 @@
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "postgres"
 }
 
 model Category {
@@ -30,14 +30,18 @@ model Item {
   name           String
   description    String?
   base_price     Float
-  tax            Float?    // Inheritance logic will happen in the Service layer
+  tax            Float?
   
   categoryId     String
   category       Category  @relation(fields: [categoryId], references: [id])
 
   pricing_type   PricingType @default(STATIC)
+  pricing_details Json?
   
   available_days Int[]     
+  
+  modifiers      Modifier[]
+  bookings       Booking[]
   
   is_active      Boolean   @default(true)
   createdAt      DateTime  @default(now())
@@ -49,6 +53,16 @@ model Modifier {
   extra_price  Float
   itemId       String
   item         Item   @relation(fields: [itemId], references: [id])
+}
+
+model Booking {
+  id         String   @id @default(uuid())
+  itemId     String
+  item       Item     @relation(fields: [itemId], references: [id])
+  startTime  DateTime
+  endTime    DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 enum PricingType {
