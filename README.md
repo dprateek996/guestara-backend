@@ -80,7 +80,11 @@ This ensures safe concurrency and prevents double-booking.
 - **Strict Validation**  
   All API inputs are validated using Zod before reaching the database.
 
----
+## 📺 Technical Walkthrough
+
+[<img src="https://github.com/user-attachments/assets/7d2b0090-3470-46ac-b436-28a2fb1b7d54" width="100%" />](https://drive.google.com/file/d/1X3h5bmAyNFVvoFx9qzIyQJpVIVGcp0B8/view?usp=sharing)
+
+> **👆 Click the image above** to watch the technical walkthrough. I dive deep into the schema design, the tax inheritance implementation, and the pricing engine logic.
 
 ## 📂 Project Structure
 src/
